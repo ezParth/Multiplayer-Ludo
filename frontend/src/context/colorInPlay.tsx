@@ -10,7 +10,7 @@ interface ColorContextInterface {
 const ColorInPlayContext = createContext<ColorContextInterface | null>(null);
 
 export const ColorContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [currentPlayingColor, setCurrentPlayingColor] = useState<Color>("red");
+  const [currentPlayingColor, setCurrentPlayingColor] = useState<Color>("yellow");
 
   const changePlayingColor = (color: Color) => {
     setCurrentPlayingColor(color);

@@ -1,8 +1,9 @@
 import Piece from "./Piece";
-import { redPiecePosition } from "../utils/Red";
+import { redPiecePosition, redInBoxposition } from "../utils/Red";
 import { usePiecePosition } from "../context/PiecePosition";
 import { useDice } from "../context/DiceContext";
 import { useColorPlaying } from "../context/colorInPlay";
+import { yellowIndexPosition } from "../utils/yellow";
 
 const Pieces = () => {
   const { currentPositions, movePiece } = usePiecePosition();
@@ -19,7 +20,8 @@ const Pieces = () => {
     movePiece(currentPlayingColor, pieceIndex, diceValue);
   };
 
-  const initialPosition = redPiecePosition[0]
+  // const initialPosition = redPiecePosition[0]
+  const initialPosition = yellowIndexPosition
   console.log("RED ARRAY:", currentPositions.red);
 
   return (
@@ -27,10 +29,13 @@ const Pieces = () => {
       {positions.map((pos, index) => (
         <Piece
           key={index}
-          top={pos?.top ?? initialPosition.top}
-          left={pos?.left ?? initialPosition.left}
+          // top={pos?.top ?? initialPosition.top}
+          top={initialPosition[index].top}
+          left={initialPosition[index].left}
+          // left={pos?.left ?? initialPosition.left}
           onClick={() => handlePieceClick(index)}
-        />
+          color="redPieceImage"
+          />
       ))}
     </>
   );

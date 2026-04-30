@@ -1,15 +1,17 @@
+import { useColorPlaying } from "../context/colorInPlay"
 import { useDice } from "../context/DiceContext"
 
 const diceFaces = [
-  "⚀", "⚁", "⚂", "⚃", "⚄", "⚅"
+  "⚀", "⚁", "⚂", "⚃", "⚄", "⚅", "❌"
 ]
 
 const Dice = () => {
-    const { diceValue, rollDice } = useDice()
+    const { diceValue, rollDice, rollDisable } = useDice()
+    const { currentPlayingColor } = useColorPlaying()
 
   return (
     <div
-      onClick={() => rollDice("red")}
+      onClick={() => rollDice(currentPlayingColor)}
       style={{
         width: "80px",
         height: "80px",
@@ -19,7 +21,9 @@ const Dice = () => {
         alignItems: "center",
         justifyContent: "center",
         fontSize: "40px",
-        cursor: "pointer",
+        // cursor: "pointer",
+        cursor: rollDisable ? "not-allowed" : "pointer",
+        opacity: rollDisable ? 0.5 : 1,
         boxShadow: "0 10px 25px rgba(0,0,0,0.5)",
         userSelect: "none",
         transition: "transform 0.1s ease",

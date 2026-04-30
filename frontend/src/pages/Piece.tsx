@@ -1,15 +1,23 @@
 import redPieceImage from "../assets/red.png"
+import yellowPieceImage from "../assets/yellow_piece.png"
 
 type PieceProps = {
   top: number
   left: number
-  onClick?:() => void
+  onClick?:() => void,
+  color: string
 }
 
-const Piece = ({ top, left, onClick }: PieceProps) => {
+const Piece = ({ top, left, onClick, color }: PieceProps) => {
+  let image = redPieceImage
+  if(color == "redPieceImage"){
+    image = redPieceImage
+  } else if(color == "yellowPieceImage") {
+    image = yellowPieceImage
+  }
   return (
     <img
-      src={redPieceImage}
+      src={image}
       alt="piece"
       onClick={onClick}
       style={{

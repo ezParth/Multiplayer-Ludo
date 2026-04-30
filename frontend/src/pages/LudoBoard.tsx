@@ -1,8 +1,12 @@
 import ludoBoardImage from "../assets/Ludo_Board_1.jpg"
 import Pieces from "./Pieces"
 import Dice from "./Dice"
+import YellowPieces from "./YellowPiece"
+import CompletePieces from "./CompletePiece"
+import { useColorPlaying } from "../context/colorInPlay"
 
 const LudoBoard = () => {
+  const { currentPlayingColor } = useColorPlaying()
   return (
     <div
       style={{
@@ -14,6 +18,19 @@ const LudoBoard = () => {
         backgroundColor: "black",
       }}
     >
+      <div
+        style={{
+          position: "absolute",
+          left: "1140px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          color: "white",
+          fontSize: "30px",
+          fontFamily: "sans-serif"
+        }}
+      >
+        {currentPlayingColor}
+      </div>
       {/* Dice on LEFT */}
       <div
         style={{
@@ -44,7 +61,9 @@ const LudoBoard = () => {
           }}
         />
 
-        <Pieces />
+        {/* <Pieces /> */}
+        {/* <YellowPieces /> */}
+        <CompletePieces />
       </div>
     </div>
   )

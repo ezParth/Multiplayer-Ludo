@@ -209,3 +209,22 @@ export const redPiecePosition: Iposition[] = [
     left: 333
   }
 ];
+
+export const redInBoxposition: Iposition[] = [
+  {
+    top: 590,
+    left: 164
+  },
+  {
+    top: 500,
+    left: 164
+  },
+  {
+    top: 500,
+    left: 74
+  },
+  {
+    top: 590,
+    left: 74
+  }
+]

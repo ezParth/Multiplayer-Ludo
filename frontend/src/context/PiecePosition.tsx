@@ -7,12 +7,22 @@ export interface InitialPositionType {
   yellow: number[]
 }
 
+export interface InitialOpenedType {
+  red: boolean[]
+  blue: boolean[]
+  green: boolean[]
+  yellow: boolean[]
+}
+
 type Color = "red" | "blue" | "green" | "yellow"
 
 interface PiecePositionContextType {
   currentPositions: InitialPositionType
   movePiece: (color: Color, pieceIndex: number, steps: number) => void
   resetPositions: () => void
+  checkOpeningStatus: (color: Color, pieceIndex: number) => boolean
+  changeOpeningStatus: (color: Color, pieceIndex: number) => void
+  checkIfAllPiecesAreInside: (color: Color) => boolean
 }
 
 const PiecePositionContext = createContext<PiecePositionContextType | null>(null)
@@ -25,20 +35,16 @@ export const PiecePositionProvider = ({ children }: { children: React.ReactNode 
     yellow: [0, 0, 0, 0],
   }
 
+  const initialOpeningState: InitialOpenedType = {
+    red: [false, false, false, false],
+    blue: [false, false, false, false],
+    green: [false, false, false, false],
+    yellow: [false, false, false, false],
+  }
+
+
   const [currentPositions, setCurrentPositions] = useState<InitialPositionType>(initialState)
-
-//   const movePiece = (color: Color, pieceIndex: number, steps: number) => {
-//     setCurrentPositions(prev => {
-//       const updatedPieces = [...prev[color]] // copy array
-
-//       updatedPieces[pieceIndex] += steps // move specific piece
-
-//       return {
-//         ...prev,
-//         [color]: updatedPieces
-//       }
-//     })
-//   }
+  const [pieceOpened, setPieceOpened] = useState<InitialOpenedType>(initialOpeningState)
 
 const movePiece = (color: Color, pieceIndex: number, steps: number) => {
     setCurrentPositions(prev => {
@@ -58,6 +64,34 @@ const movePiece = (color: Color, pieceIndex: number, steps: number) => {
     })
   }
 
+  const changeOpeningStatus = (color: Color, pieceIndex: number) => {
+    setPieceOpened(prev => {
+      const updated = [...prev[color]]
+
+      if (pieceIndex < 0 || pieceIndex >= updated.length) {
+        console.error("Invalid pieceIndex:", pieceIndex)
+        return prev
+      }
+
+      updated[pieceIndex] = !updated[pieceIndex]
+
+      console.log("Updated -> ",updated, "Piece -> ", updated[pieceIndex])
+
+      return {
+        ...prev,
+        [color]: updated
+      }
+    })
+  }
+
+  const checkOpeningStatus = (color: Color, pieceIndex: number) => {
+    return pieceOpened[color][pieceIndex]
+  }
+
+  const checkIfAllPiecesAreInside = (color: Color) => {
+    return pieceOpened[color].every(el => el === false)
+  }
+
   const resetPositions = () => {
     setCurrentPositions({
       red: [0, 0, 0, 0],
@@ -68,7 +102,7 @@ const movePiece = (color: Color, pieceIndex: number, steps: number) => {
   }
 
   return (
-    <PiecePositionContext.Provider value={{ currentPositions, movePiece, resetPositions }}>
+    <PiecePositionContext.Provider value={{ currentPositions, movePiece, resetPositions, checkOpeningStatus, changeOpeningStatus, checkIfAllPiecesAreInside }}>
       {children}
     </PiecePositionContext.Provider>
   )
