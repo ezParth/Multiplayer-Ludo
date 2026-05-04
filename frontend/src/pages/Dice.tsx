@@ -11,7 +11,7 @@ const Dice = () => {
 
   return (
     <div
-      onClick={() => rollDice(currentPlayingColor)}
+      onClick={ () => !rollDisable && rollDice(currentPlayingColor)}
       style={{
         width: "80px",
         height: "80px",
