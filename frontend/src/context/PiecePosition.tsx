@@ -23,16 +23,17 @@ interface PiecePositionContextType {
   checkOpeningStatus: (color: Color, pieceIndex: number) => boolean
   changeOpeningStatus: (color: Color, pieceIndex: number) => void
   checkIfAllPiecesAreInside: (color: Color) => boolean
+  MovePieceToZero: (color: Color, pieceIndex: number) => void
 }
 
 const PiecePositionContext = createContext<PiecePositionContextType | null>(null)
 
 export const PiecePositionProvider = ({ children }: { children: React.ReactNode }) => {
   const initialState: InitialPositionType = {
-    red: [0, 0, 0, 0],
+    red: [1, 0, 0, 0],
     blue: [0, 0, 0, 0],
     green: [0, 0, 0, 0],
-    yellow: [0, 0, 0, 0],
+    yellow: [25, 0, 0, 0],
   }
 
   const initialOpeningState: InitialOpenedType = {
@@ -57,6 +58,24 @@ const movePiece = (color: Color, pieceIndex: number, steps: number) => {
   
       updated[pieceIndex] += steps
   
+      return {
+        ...prev,
+        [color]: updated
+      }
+    })
+  }
+
+  const MovePieceToZero = (color: Color, pieceIndex: number) => {
+    setCurrentPositions(prev => {
+      const updated = [...prev[color]]
+
+      if (pieceIndex < 0 || pieceIndex >= updated.length) {
+        console.error("Invalid pieceIndex:", pieceIndex)
+        return prev
+      }
+
+      updated[pieceIndex] = 0
+
       return {
         ...prev,
         [color]: updated
@@ -102,7 +121,7 @@ const movePiece = (color: Color, pieceIndex: number, steps: number) => {
   }
 
   return (
-    <PiecePositionContext.Provider value={{ currentPositions, movePiece, resetPositions, checkOpeningStatus, changeOpeningStatus, checkIfAllPiecesAreInside }}>
+    <PiecePositionContext.Provider value={{ currentPositions, movePiece, resetPositions, checkOpeningStatus, changeOpeningStatus, checkIfAllPiecesAreInside, MovePieceToZero }}>
       {children}
     </PiecePositionContext.Provider>
   )

@@ -5,6 +5,7 @@ import { usePiecePosition } from "../context/PiecePosition";
 import { useDice, type Color } from "../context/DiceContext";
 import { useColorPlaying } from "../context/colorInPlay";
 import { useChangeColorLogic } from "../Hooks/ChangeColor";
+import { useCheckAndCutPiece } from "../Hooks/CheckAndCutHook";
 
 const CompletePieces = () => {
   const { currentPositions, movePiece, checkOpeningStatus, changeOpeningStatus, checkIfAllPiecesAreInside } = usePiecePosition();
@@ -12,6 +13,7 @@ const CompletePieces = () => {
   const { diceValue, setRollDisableLogic, resetDiceValueOfColor, diceValueByColor } = useDice();
         
   const changeColor = useChangeColorLogic()
+  const checkAndCutPiece =  useCheckAndCutPiece()
 
   const positions = currentPositions.yellow.map(
     (posIndex) => yellowPiecePosition[posIndex]
@@ -24,6 +26,8 @@ const CompletePieces = () => {
 //   const numberOfPlayersPlaying = localStorage.getItem("numberOfPlayers") || 2
 
   const handlePieceClick = (pieceIndex: number, color: Color) => {
+
+    console.log("red piece position -> ", currentPositions)
 
     if(currentPlayingColor != color) {
         return
@@ -59,6 +63,7 @@ const CompletePieces = () => {
         // return
     } else {
         movePiece(currentPlayingColor, pieceIndex, diceValue);
+        checkAndCutPiece(pieceIndex, color)
     }
 
     if(diceValue == 6) {
